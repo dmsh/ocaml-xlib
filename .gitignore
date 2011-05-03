@@ -1,0 +1,17 @@
+*.cmo
+*.cma
+*.cmx
+*.cmxs
+*.cmxa
+*.cmi
+*.a
+*.o
+*.so
+
+mlcpp.exe
+GLX.mli
+Xt.mli
+keysym.ml
+keysym.mli
+keysym_match.ml
+keysym_match.mli
