@@ -499,6 +499,29 @@ ml_XUngrabKeyboard( value dpy, value time )
 }
 
 CAMLprim value
+ml_XGrabKey( value dpy, value keycode, value modifiers,
+             value grab_window, value owner_events, value pointer_mode,
+			 value keyboard_mode )
+{
+		return Val_int(XGrabKey(
+								Display_val(dpy),
+								Val_int(keycode),
+								Val_uint(modifiers),
+								Window_val(grab_window),
+								Bool_val(owner_events),
+								Val_int(pointer_mode),
+								Val_int(keyboard_mode)
+								));
+		
+}
+CAMLprim value
+ml_XGrabKey_bytecode( value * argv, int argn )
+{
+    return ml_XGrabKey( argv[0], argv[1], argv[2], argv[3],
+						argv[4], argv[5], argv[6] );
+}
+
+CAMLprim value
 ml_XConnectionNumber( value dpy )
 {
     return Val_int( XConnectionNumber( Display_val(dpy) ));
@@ -4884,6 +4907,15 @@ ml_XKeycodeToKeysym( value dpy, value keycode, value index )
         KeyCode_val(keycode),
         Int_val(index) );
     return Val_keysym(keysym);
+}
+
+CAMLprim value
+ml_XKeysymToKeycode( value dpy, value keysym )
+{
+    KeyCode keycode = XKeysymToKeycode(
+        Display_val(dpy),
+        Keysym_val(keysym) );
+    return Val_KeyCode(keycode);
 }
 
 
