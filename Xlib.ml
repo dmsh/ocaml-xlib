@@ -178,6 +178,11 @@ external xUngrabKeyboard: dpy:display -> time:time -> unit = "ml_XUngrabKeyboard
 (** {{:http://tronche.com/gui/x/xlib/input/XUngrabKeyboard.html}man} *)
 
 
+external xGrabKey: display -> int -> uint ->
+	window -> bool -> int ->
+		int -> int = "ml_XGrabKey" "ml_XGrabKey_bytecode"
+
+
 (** {3 Screen number} *)
 
 type screen_number = private int
@@ -1992,6 +1997,9 @@ external xLookupKeysym: event:xKeyEvent xEvent -> index:int -> keysym = "ml_XLoo
 
 external xKeycodeToKeysym: dpy:display -> keycode:keycode -> index:int -> keysym = "ml_XKeycodeToKeysym"
 (** {{:http://tronche.com/gui/x/xlib/utilities/keyboard/XKeycodeToKeysym.html}man} *)
+
+external xKeysymToKeycode: display -> keysym -> keycode = "ml_XKeysymToKeycode"
+
 
 (* TODO
 
