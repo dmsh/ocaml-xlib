@@ -14,6 +14,11 @@ This library is released under the terms of the GNU Lesser General
 Public License, with the special exception on linking described in
 file COPYING.txt.
 
+============= ALTERNATIVE LICENSES %
+
+You can also use this code under MIT or BSD licenses if it is more
+convenient for you.
+
 ============= HOMEPAGE %
 
 http://www.linux-nantes.org/%7Efmonnier/OCaml/Xlib/
@@ -96,5 +101,9 @@ It is released under the BSD license.
 ============= CONTRIBUTORS %
 
 Arlen Cuss, 2011-01-28: fix for the function xFetchName.
+ 
+Alex Muscar <muscar(_)gmail.com>, 2012-01-01:
+- provided a patch to add the function ml_XCreateWindowEvent_datas()
+  and the type xCreateWindowEvent_contents
 
 ============= EOF %

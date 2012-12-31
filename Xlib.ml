@@ -178,6 +178,11 @@ external xUngrabKeyboard: dpy:display -> time:time -> unit = "ml_XUngrabKeyboard
 (** {{:http://tronche.com/gui/x/xlib/input/XUngrabKeyboard.html}man} *)
 
 
+external xGrabKey: display -> int -> uint ->
+	window -> bool -> int ->
+		int -> int = "ml_XGrabKey" "ml_XGrabKey_bytecode"
+
+
 (** {3 Screen number} *)
 
 type screen_number = private int
@@ -1892,10 +1897,25 @@ type xSelectionEvent_contents = {
 external xSelectionEvent_datas: xSelectionEvent xEvent -> xSelectionEvent_contents = "ml_XSelectionEvent_datas"
 (** {{:http://tronche.com/gui/x/xlib/events/client-communication/selection.html}man} *)
 
+type xCreateWindowEvent_contents = {
+    createwindow_serial: uint;
+    createwindow_send_event: bool;
+    createwindow_display: display;
+    createwindow_parent: window;
+    createwindow_window: window;
+    createwindow_x: int;
+    createwindow_y: int;
+    createwindow_width: int;
+    createwindow_height: int;
+    createwindow_border_width: int;
+    createwindow_override_redirect: bool;
+  }
+external xCreateWindowEvent_datas: xCreateWindowEvent xEvent -> xCreateWindowEvent_contents = "ml_XCreateWindowEvent_datas"
+(** {{:http://tronche.com/gui/x/xlib/events/window-state-change/create.html#XCreateWindowEvent}man} *)
+
 (* TODO
  xGraphicsExposeEvent
  xNoExposeEvent
- xCreateWindowEvent
  xUnmapEvent
  xMapEvent
  xMapRequestEvent
@@ -1930,7 +1950,7 @@ type event_content =
   | XGraphicsExposeEvCnt   of todo_contents
   | XNoExposeEvCnt         of todo_contents
   | XVisibilityEvCnt       of xVisibilityEvent_contents
-  | XCreateWindowEvCnt     of todo_contents
+  | XCreateWindowEvCnt     of xCreateWindowEvent_contents
   | XDestroyWindowEvCnt    of xDestroyWindowEvent_contents
   | XUnmapEvCnt            of todo_contents
   | XMapEvCnt              of todo_contents
@@ -1977,6 +1997,9 @@ external xLookupKeysym: event:xKeyEvent xEvent -> index:int -> keysym = "ml_XLoo
 
 external xKeycodeToKeysym: dpy:display -> keycode:keycode -> index:int -> keysym = "ml_XKeycodeToKeysym"
 (** {{:http://tronche.com/gui/x/xlib/utilities/keyboard/XKeycodeToKeysym.html}man} *)
+
+external xKeysymToKeycode: display -> keysym -> keycode = "ml_XKeysymToKeycode"
+
 
 (* TODO
 

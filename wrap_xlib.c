@@ -499,6 +499,29 @@ ml_XUngrabKeyboard( value dpy, value time )
 }
 
 CAMLprim value
+ml_XGrabKey( value dpy, value keycode, value modifiers,
+             value grab_window, value owner_events, value pointer_mode,
+			 value keyboard_mode )
+{
+		return Val_int(XGrabKey(
+								Display_val(dpy),
+								Val_int(keycode),
+								Val_uint(modifiers),
+								Window_val(grab_window),
+								Bool_val(owner_events),
+								Val_int(pointer_mode),
+								Val_int(keyboard_mode)
+								));
+		
+}
+CAMLprim value
+ml_XGrabKey_bytecode( value * argv, int argn )
+{
+    return ml_XGrabKey( argv[0], argv[1], argv[2], argv[3],
+						argv[4], argv[5], argv[6] );
+}
+
+CAMLprim value
 ml_XConnectionNumber( value dpy )
 {
     return Val_int( XConnectionNumber( Display_val(dpy) ));
@@ -4338,9 +4361,28 @@ ml_XVisibilityEvent_datas( value event )
     CAMLreturn( dat );
 }
 
-/*
-   TODO  CreateNotify
-*/
+/* CreateNotify */
+
+CAMLprim value
+ml_XCreateWindowEvent_datas( value event )
+{
+    CAMLparam1( event );
+    CAMLlocal1( dat );
+    XEvent * e = XEvent_val(event);
+    dat = caml_alloc(11, 0);
+    Store_field( dat, 0, Val_ulong(e->xcreatewindow.serial) );
+    Store_field( dat, 1, Val_bool(e->xcreatewindow.send_event) );
+    Store_field( dat, 2, Val_Display(e->xcreatewindow.display) );
+    Store_field( dat, 3, Val_Window(e->xcreatewindow.parent) );
+    Store_field( dat, 4, Val_Window(e->xcreatewindow.window) );
+    Store_field( dat, 5, Val_int(e->xcreatewindow.x) );
+    Store_field( dat, 6, Val_int(e->xcreatewindow.y) );
+    Store_field( dat, 7, Val_int(e->xcreatewindow.width) );
+    Store_field( dat, 8, Val_int(e->xcreatewindow.height) );
+    Store_field( dat, 9, Val_int(e->xcreatewindow.border_width) );
+    Store_field( dat, 10, Val_bool(e->xcreatewindow.override_redirect) );
+    CAMLreturn( dat );
+}
 
 /* DestroyNotify */
 
@@ -4444,7 +4486,7 @@ ml_XConfigureRequestEvent_datas( value event )
     if (e->type != ConfigureRequest)
       caml_invalid_argument("not a ConfigureRequest event");
 #endif
-    dat = caml_alloc(7, 0);
+    dat = caml_alloc(10, 0);
     Store_field( dat, 0, Val_Window(e->xconfigurerequest.parent) );
     Store_field( dat, 1, Val_Window(e->xconfigurerequest.window) );
     Store_field( dat, 2, Val_int(e->xconfigurerequest.x) );
@@ -4884,6 +4926,15 @@ ml_XKeycodeToKeysym( value dpy, value keycode, value index )
         KeyCode_val(keycode),
         Int_val(index) );
     return Val_keysym(keysym);
+}
+
+CAMLprim value
+ml_XKeysymToKeycode( value dpy, value keysym )
+{
+    KeyCode keycode = XKeysymToKeycode(
+        Display_val(dpy),
+        Keysym_val(keysym) );
+    return Val_KeyCode(keycode);
 }
 
 
