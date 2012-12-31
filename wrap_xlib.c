@@ -4338,9 +4338,28 @@ ml_XVisibilityEvent_datas( value event )
     CAMLreturn( dat );
 }
 
-/*
-   TODO  CreateNotify
-*/
+/* CreateNotify */
+
+CAMLprim value
+ml_XCreateWindowEvent_datas( value event )
+{
+    CAMLparam1( event );
+    CAMLlocal1( dat );
+    XEvent * e = XEvent_val(event);
+    dat = caml_alloc(11, 0);
+    Store_field( dat, 0, Val_ulong(e->xcreatewindow.serial) );
+    Store_field( dat, 1, Val_bool(e->xcreatewindow.send_event) );
+    Store_field( dat, 2, Val_Display(e->xcreatewindow.display) );
+    Store_field( dat, 3, Val_Window(e->xcreatewindow.parent) );
+    Store_field( dat, 4, Val_Window(e->xcreatewindow.window) );
+    Store_field( dat, 5, Val_int(e->xcreatewindow.x) );
+    Store_field( dat, 6, Val_int(e->xcreatewindow.y) );
+    Store_field( dat, 7, Val_int(e->xcreatewindow.width) );
+    Store_field( dat, 8, Val_int(e->xcreatewindow.height) );
+    Store_field( dat, 9, Val_int(e->xcreatewindow.border_width) );
+    Store_field( dat, 10, Val_bool(e->xcreatewindow.override_redirect) );
+    CAMLreturn( dat );
+}
 
 /* DestroyNotify */
 
@@ -4444,7 +4463,7 @@ ml_XConfigureRequestEvent_datas( value event )
     if (e->type != ConfigureRequest)
       caml_invalid_argument("not a ConfigureRequest event");
 #endif
-    dat = caml_alloc(7, 0);
+    dat = caml_alloc(10, 0);
     Store_field( dat, 0, Val_Window(e->xconfigurerequest.parent) );
     Store_field( dat, 1, Val_Window(e->xconfigurerequest.window) );
     Store_field( dat, 2, Val_int(e->xconfigurerequest.x) );

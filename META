@@ -1,5 +1,5 @@
 name = "xlib"
-version = "20110221"
+version = "20120101"
 description = "OCaml bindings to the Xlib library"
 license = "LGPL + OCaml linking exception"
 requires = ""
